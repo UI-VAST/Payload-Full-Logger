@@ -9,7 +9,7 @@ def timestamp():
 
 
 class Logger:
-    def __init__(self, module, debug=False):
+    def __init__(self, module="", debug=False):
         self.debug = debug
         self.logPath = os.path.join(os.getcwd(), 'log')
         if not os.path.exists(self.logPath):

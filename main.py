@@ -3,7 +3,7 @@
 
 # pylint: disable=wrong-import-position
 import time
-
+from GPS import GetLatestGPS
 from Logger import Logger
 # CircuitPython / Blinka
 # import board
@@ -12,7 +12,7 @@ import serial
 debug = False
 port = "/dev/serial0"
 baud = 19200
-logger = Logger(debug)
+logger = Logger("RockBlock", debug)
 #uart = serial.Serial("/dev/serial0", 19200)
 uart = serial.Serial(port)
 #uart = board.UART()
@@ -33,7 +33,7 @@ logger.log("Signal Quality: ", str(rb.signal_quality))
 time.sleep(8)
 while 1:
     # set the text
-    gpsData = ""
+    gpsData = GetLatestGPS()
     logger.log("Setting Text... ", gpsData)
     rb.text_out = gpsData
 
@@ -46,7 +46,7 @@ while 1:
         time.sleep(10)
         status = rb.satellite_transfer()
         logger.log(str(retry), str(status))
-        gpsData = ""
+        gpsData = GetLatestGPS()
         logger.log("Setting Text... ", gpsData)
         rb.text_out = gpsData
         retry += 1

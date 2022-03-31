@@ -6,7 +6,7 @@ from Logger import Logger
 
 class OneWire:
     def __init__(self, ForC='F', debug=False):
-        self.logger = Logger(debug)
+        self.logger = Logger("OneWire", debug)
         self.logger.log("Initiating OneWire Temperature Probe with temperature logging mode in {0} and debugging {1}".format("Fahrenheit" if ForC == 'F' else "Celsius", "True" if debug else "False"))
         self.ForC = 'F' if ForC.upper() == 'F' else 'C'
 

@@ -5,7 +5,7 @@ from Logger import Logger
 
 class MPL3115A2:
     def __init__(self, ForC='F', debug=False):
-        self.logger = Logger(debug)
+        self.logger = Logger("MPL3115A2", debug)
         self.logger.log("Initiating MPL3115A2 with temperature logging mode in {0} and debugging {1}".format("Fahrenheit" if ForC == 'F' else "Celsius", "True" if debug else "False"))
         self.ForC = 'F' if ForC.upper() == 'F' else 'C'
         self.bus = smbus.SMBus(1)
