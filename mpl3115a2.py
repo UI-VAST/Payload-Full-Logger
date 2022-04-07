@@ -1,4 +1,4 @@
-import smbus
+import smbus2
 import time
 from Logger import Logger
 
@@ -8,7 +8,7 @@ class MPL3115A2:
         self.logger = Logger("MPL3115A2", debug)
         self.logger.log("Initiating MPL3115A2 with temperature logging mode in {0} and debugging {1}".format("Fahrenheit" if ForC == 'F' else "Celsius", "True" if debug else "False"))
         self.ForC = 'F' if ForC.upper() == 'F' else 'C'
-        self.bus = smbus.SMBus(1)
+        self.bus = smbus2.SMBus(1)
         # MPL3115A2 address, 0x60(96)p
         # Select control register, 0x26(38)
         # 0xB9(185) Active mode, OSR = 128, Altimeter mode
@@ -53,8 +53,8 @@ class MPL3115A2:
         pressure = (pres / 4.0) / 1000.0
 
         self.logger.log("Altitude: ", "{:.2f} m".format(altitude))
-        self.logger.log("Pressure: ", "{:.2f} kPa".format(pressure))
         self.logger.log("Temperature: ", "{:.2f} {}".format(temp, self.ForC))
+        self.logger.log("Pressure: ", "{:.2f} kPa".format(pressure))
 
         return altitude, temp, pressure
 

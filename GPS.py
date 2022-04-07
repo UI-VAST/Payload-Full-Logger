@@ -2,7 +2,7 @@
 
 import serial
 import time
-import pynmea2
+# import pynmea2
 import os
 import datetime
 import threading
