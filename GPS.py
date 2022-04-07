@@ -2,7 +2,7 @@
 
 import serial
 import time
-# import pynmea2
+import pynmea2
 import os
 import datetime
 import threading
@@ -27,17 +27,19 @@ def begin():
     venusGPS.flush()
     while 1:
         nmeaString = venusGPS.readline()
-        #print("{}".format(nmeaString))
+        nmeaString = nmeaString.decode(errors='ignore')
+        #print(">{}<".format(nmeaString))
         try:
-            #pynmea2.parse("{}".format(nmeaString))
+            msg = pynmea2.parse(nmeaString)
             with open(gpsFile,'a') as f:
-                f.write("{}\n".format(nmeaString))
+                print("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
+                #f.write("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
 
             venusGPS.reset_input_buffer()
             venusGPS.flush()
             time.sleep(3)
         except:
-            print("Exception...")
+            print("Exception...\n")
             continue
 
         '''
