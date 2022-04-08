@@ -10,7 +10,7 @@ from Logger import Logger
 from adafruit_rockblock import RockBlock
 from mpl3115a2 import MPL3115A2
 from ONEWIRE import OneWire
-from extraDef import getData
+# from extraDef import getData
 
 import serial
 
@@ -37,6 +37,14 @@ rb = RockBlock(uart)
 logger.log("Model: ", str(rb.model))
 logger.log("System Time: ", str(rb.system_time))
 logger.log("Signal Quality: ", str(rb.signal_quality))
+
+
+def getData():
+    gpsData = gps.GetLatestGPS()
+    altData = mpl.getAltimeterData()
+    tempData = temp.read_temp()
+    return gpsData, altData[1]
+
 
 time.sleep(8)
 status = (-1)
