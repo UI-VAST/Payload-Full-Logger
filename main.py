@@ -67,7 +67,7 @@ while 1:
         logger.log("Signal Quality: ", str(rb.signal_quality))
         data = getData()
         logger.log("Setting Text... ", data)
-        rb.text_out = str(data)
+        rb.text_out = "RB0012828" + str(data)
         retry += 1
 
     if 8 >= status[0] > -1:
