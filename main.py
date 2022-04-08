@@ -54,7 +54,7 @@ while 1:
     # set the text
     data = getData()
     logger.log("Setting Text... ", data)
-    rb.text_out = data
+    rb.text_out = str(data)
 
     if counter % 180 == 0:  # Send every
         # try a satellite Short Burst Data transfer
@@ -72,7 +72,7 @@ while 1:
 
     if 8 >= status[0] > -1:
         logger.log("Sent!")
-        status[0] = -1
+        status[0] = (-1, 0, 0, 0, 0, 0)
         retry = 0
 
     time.sleep(1)  # Sleep for 1 second
