@@ -20,10 +20,10 @@ class GPS:
     def GetLatestGPS(self):
         nmeaString = self.venusGPS.readline()
         nmeaString = nmeaString.decode(errors='ignore')
-        # print(">{}<".format(nmeaString))
+        #print(">{}<".format(nmeaString))
         try:
             msg = pynmea2.parse(nmeaString)
-            self.lastsMessage = "{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude)  # f.write("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
+            self.lastsMessage = "{:.5f},{:.5f},{:.2f}".format(msg.latitude, msg.longitude, msg.altitude)  # f.write("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
 
             self.venusGPS.reset_input_buffer()
             self.venusGPS.flush()
