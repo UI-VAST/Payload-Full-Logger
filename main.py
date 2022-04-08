@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
 # SPDX-License-Identifier: MIT
 
+import os #Initializes soft_uart
+os.system("insmod //home/pi/soft_uart/soft_uart.ko gpio_tx=17 gpio_rx=18")
 # pylint: disable=wrong-import-position
 import time
 from GPS import GPS
