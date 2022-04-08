@@ -74,6 +74,7 @@ while 1:
         logger.log("Sent!")
         status[0] = (-1, 0, 0, 0, 0, 0)
         retry = 0
-
+        
+    counter += 1
     time.sleep(1)  # Sleep for 1 second
 
