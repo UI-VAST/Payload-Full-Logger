@@ -3,7 +3,7 @@
 
 # pylint: disable=wrong-import-position
 import time
-from GPS import GetLatestGPS
+from GPS import GPS
 from Logger import Logger
 from adafruit_rockblock import RockBlock
 from mpl3115a2 import MPL3115A2
@@ -26,6 +26,7 @@ uart = serial.Serial(port)
 # import serial
 # uart = serial.Serial("/dev/ttyUSB0", 19200)
 
+gps = GPS(debug)
 mpl = MPL3115A2(tsym, debug)
 temp = OneWire(tsym, debug)
 

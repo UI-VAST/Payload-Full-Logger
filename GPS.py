@@ -1,59 +1,38 @@
 #!/usr/bin/python
 
 import serial
-import time
 import pynmea2
-import os
-import datetime
-import threading
+from Logger import Logger
 
-def timestamp():
-    return str(datetime.datetime.now().strftime("%Y-%m-%dT%H%M%S"))
 
-#venusGPS = serial.Serial("/dev/ttyUSB0",baudrate=9600,timeout=5)
-venusGPS = serial.Serial("/dev/ttySOFT0",baudrate=9600,timeout=5)
+class GPS:
+    def __init__(self, debug=False):
+        # venusGPS = serial.Serial("/dev/ttyUSB0",baudrate=9600,timeout=5)
+        self.logger = Logger("GPS", debug)
+        self.logger.log("Initiating GPS with debugging {}".format("True" if debug else "False"))
+        self.venusGPS = serial.Serial("/dev/ttySOFT0", baudrate=9600, timeout=5)
+        self.venusGPS.reset_input_buffer()
+        self.venusGPS.flush()
+        self.lastsMessage = ""
 
-logPath = os.path.join(os.getcwd(),'log')
-if(not os.path.exists(logPath)):
-    os.mkdir(logPath)
-gpsFile = os.path.join(logPath,'gps' + timestamp() + '.txt')
-with open(gpsFile,'a') as f:
-    f.write("Begin File-------------------------------------\n")
-
-# nmea:
-# $GPGGA,timestamp,lat,n,lon,w,fix,numsats,hdop,altitude,m,geoid,m,time,dgps,checksum
-def begin():
-    venusGPS.reset_input_buffer()
-    venusGPS.flush()
-    while 1:
-        nmeaString = venusGPS.readline()
+    # nmea:
+    # $GPGGA,timestamp,lat,n,lon,w,fix,numsats,hdop,altitude,m,geoid,m,time,dgps,checksum
+    def GetLatestGPS(self):
+        nmeaString = self.venusGPS.readline()
         nmeaString = nmeaString.decode(errors='ignore')
-        #print(">{}<".format(nmeaString))
+        # print(">{}<".format(nmeaString))
         try:
             msg = pynmea2.parse(nmeaString)
-            with open(gpsFile,'a') as f:
-                print("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
-                #f.write("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
+            self.lastsMessage = "{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude)  # f.write("{:.5f},{:.5f},{:.2f}\n".format(msg.latitude, msg.longitude, msg.altitude))
 
-            venusGPS.reset_input_buffer()
-            venusGPS.flush()
-            time.sleep(3)
+            self.venusGPS.reset_input_buffer()
+            self.venusGPS.flush()
+            return self.lastsMessage
         except:
-            print("Exception...\n")
-            continue
+            self.logger.log("Exception. Sending last message... ", self.lastsMessage)
+            return self.lastsMessage
 
-        '''
-        nmeaParsed = pynmea2.parse(nmeaString);
-        '''
 
-def GetLatestGPS():
-    with open(gpsFile,'r') as f:
-        for latest in f:
-            pass
-    print("Latest: {}\n".format(latest[19:58]))
-    return "{}.".format(latest[19:58])
-
-# this file is imported in IridiumTransmitter.py,
-# which runs the entire file,
-# and launches this thread:
-threading.Thread(target=begin).start()
+'''
+nmeaParsed = pynmea2.parse(nmeaString);
+'''
